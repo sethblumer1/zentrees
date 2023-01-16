@@ -8,10 +8,12 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded());
-const path = require('path');
 
 // For backend data
 const mongoose = require('mongoose');
+
+// For token
+const cookieParser = require('cookie-parser');
 
 // Import routes
 const reminderRoute = require('./routes/reminders');
@@ -79,7 +81,7 @@ app.post('/verify', function (req, res) {
 });
 
 // Post request using user's phone number with Twilio
-app.post('/', function (req, res) {
+app.post('/send-code', function (req, res) {
   const userNumber = req.body.number;
 
   // generates random 4 digit number between 1-9

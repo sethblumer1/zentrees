@@ -2,6 +2,10 @@ const { Schema, model } = require('mongoose');
 
 const ReminderSchema = new Schema(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     content: {
       type: String,
       required: true,

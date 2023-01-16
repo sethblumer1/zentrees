@@ -1,6 +1,7 @@
 import Layout from './components/Layout';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { theme } from '@chakra-ui/pro-theme';
+import { GlobalProvider } from './components/context/GlobalContext';
 
 function App() {
   const myTheme = extendTheme(
@@ -11,9 +12,11 @@ function App() {
   );
 
   return (
-    <ChakraProvider theme={myTheme}>
-      <Layout />
-    </ChakraProvider>
+    <GlobalProvider>
+      <ChakraProvider theme={myTheme}>
+        <Layout />
+      </ChakraProvider>
+    </GlobalProvider>
   );
 }
 

@@ -27,7 +27,22 @@ import { useState, useEffect } from 'react';
 
 import axios from 'axios';
 
+import { useGlobalContext } from '../context/GlobalContext';
+import { Link, useNavigate } from 'react-router-dom';
+
+import Landing from '../LandingComps/Landing';
+
 export const SignInIndex = () => {
+  const { user, changeUser } = useGlobalContext();
+  const loggedInUser = localStorage.getItem('user');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // if (user || loggedInUser) {
+    //   navigate('/dashboard');
+    // }
+  }, [user, navigate]);
+
   const CodeInput = () => {
     return (
       <HStack display="flex" justify={'center'}>
@@ -59,7 +74,7 @@ export const SignInIndex = () => {
     let userNumber = { number: phoneNumber };
 
     axios
-      .post('/', userNumber)
+      .post('/send-code', userNumber)
       .then((res) => {
         console.log(res);
       })
@@ -97,9 +112,9 @@ export const SignInIndex = () => {
           // If user entered in code correctly, create new user / log in
           if (res.data.message === 'success') {
             axios
-              .post('/api/auth', { phoneNumber: phoneNumber })
+              .post('/api/auth/login', { phoneNumber: phoneNumber })
               .then((res) => {
-                console.log(res.data);
+                changeUser(res.data);
               })
               .catch((err) => {
                 console.log(err);
@@ -157,48 +172,39 @@ export const SignInIndex = () => {
   };
 
   return (
-    <Container
-      maxW="md"
-      h="100vh"
-      display="flex"
-      alignItems={'center'}
-      justifyContent={'center'}
-      // py={{ base: '12', md: '24' }}
-    >
-      <Stack spacing="8" minW="sm">
-        <Stack spacing="6" align="center">
-          {/* <Logo /> */}
-          <Heading size={useBreakpointValue({ base: 'xs', md: 'sm' })}>
-            Log In / Sign Up
-          </Heading>
-        </Stack>
-        <Stack spacing="6">
-          <Divider />
-          <Stack spacing="4">
-            <InputGroup>
-              <InputLeftAddon children="+1" />
-              <Input
-                placeholder="phone number"
-                type="text"
-                value={phoneNumber}
-                onChange={(e) => changePhoneNumber(e)}
-              />
-            </InputGroup>
-            {/* <Button
-              variant="primary"
-              onClick={(e) => {
-                sendText(e);
-              }}
-            >
-              Continue with phone number
-            </Button> */}
-            <CodeModal />
+    <>
+      {user || loggedInUser ? (
+        <Landing />
+      ) : (
+        <Container
+          maxW="md"
+          h="100vh"
+          display="flex"
+          alignItems={'center'}
+          justifyContent={'center'}
+        >
+          <Stack spacing="8" minW="sm">
+            <Stack spacing="6" align="center">
+              <Heading size={'sm'}>Log In / Sign Up</Heading>
+            </Stack>
+            <Stack spacing="6">
+              <Divider />
+              <Stack spacing="4">
+                <InputGroup>
+                  <InputLeftAddon children="+1" />
+                  <Input
+                    placeholder="phone number"
+                    type="text"
+                    value={phoneNumber}
+                    onChange={(e) => changePhoneNumber(e)}
+                  />
+                </InputGroup>
+                <CodeModal />
+              </Stack>
+            </Stack>
           </Stack>
-        </Stack>
-        {/* <Button variant="link" colorScheme="blue" size="sm">
-        Continue using Single Sign-on (SSO)
-      </Button> */}
-      </Stack>
-    </Container>
+        </Container>
+      )}
+    </>
   );
 };

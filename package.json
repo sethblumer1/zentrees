@@ -12,13 +12,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.15",
     "@chakra-ui/pro-theme": "^0.0.57",
     "axios": "^1.2.1",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "mongoose": "^6.8.1",
+    "prop-types": "^15.8.1",
+    "react-datepicker": "^4.8.0",
+    "react-icons": "^4.7.1",
     "twilio": "^3.84.0"
   },
   "devDependencies": {
